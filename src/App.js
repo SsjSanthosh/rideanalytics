@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Map from "./Components/Map";
+import "./App.scss";
+import FileUpload from "./Components/FileUpload";
+import { Provider } from "react-redux";
 
+import store from "./Redux/store";
+import Navbar from "./Components/Navbar";
+import Charts from "./Components/Charts";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Navbar />
+        <div className="Top-Container">
+          <FileUpload />
+          <Map />
+        </div>
+        <Charts />
+        {/* <Maptest /> */}
+      </div>
+    </Provider>
   );
 }
 

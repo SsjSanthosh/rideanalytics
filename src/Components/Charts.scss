@@ -1,0 +1,17 @@
+.charts-container {
+  margin-top: 10vh;
+  width: 70%;
+  margin: auto;
+  margin-bottom: 10vh;
+  .charts {
+    margin: 5vh 20%;
+  }
+  .charts-btns {
+    display: flex;
+    justify-content: center;
+    > button {
+      padding: 20px;
+      margin: 10px;
+    }
+  }
+}
