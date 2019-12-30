@@ -2,6 +2,7 @@
   "name": "locale-assignment",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ssjsanthosh.github.io/rideanalytics",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -31,6 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
