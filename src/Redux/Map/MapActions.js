@@ -19,3 +19,17 @@ export const addBookingData = data => {
     payload: data
   };
 };
+
+export const addDistanceData = data => {
+  return {
+    type: "ADD_DISTANCE_DATA",
+    payload: data
+  };
+};
+
+export const addTravelTypeData = data => {
+  return {
+    type: "ADD_TRAVEL_TYPE_DATA",
+    payload: data
+  };
+};

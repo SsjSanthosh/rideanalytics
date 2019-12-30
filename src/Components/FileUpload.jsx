@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { addData } from "./../Redux/csvData/csvActions";
 function FileUpload(props) {
   const [data, setData] = useState([]);
-  function csvJSON(csv) {
+  // Function to convert csv into a JS object
+  const csvJSON = csv => {
     var lines = csv.split("\n");
 
     var result = [];
@@ -22,11 +23,11 @@ function FileUpload(props) {
       result.push(obj);
     }
 
-    //return result; //JavaScript object
+    //return //JavaScript object
     result.pop();
 
     return result;
-  }
+  };
   const handleUpload = files => {
     const reader = new FileReader();
     reader.readAsText(files[0]);
@@ -42,20 +43,6 @@ function FileUpload(props) {
           Upload a csv file
         </button>
       </ReactFileReader>
-      {data.length > 0 && (
-        <div>
-          {data.map(d => {
-            return (
-              <div>
-                <p>
-                  From {d.from_lat}, {d.from_long} To {d.to_lat}, {d.to_long}
-                </p>
-                <p></p>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }

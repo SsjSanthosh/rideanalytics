@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import DeckGL, { ScatterplotLayer } from "deck.gl";
 import {
   addMonthlyData,
   addHourlyData,
-  addBookingData
+  addBookingData,
+  addDistanceData,
+  addTravelTypeData
 } from "./../Redux/Map/MapActions";
 import Immutable from "immutable";
 import ScatterplotOverlay from "./ScatterplotOverlay";
 import "./Map.scss";
-import MapGL, { StaticMap } from "react-map-gl";
+import MapGL from "react-map-gl";
 
 function Map(props) {
+  // initial viewport for the map, setting location to bengaluru
   const initialVP = {
     latitude: 12.972442,
     longitude: 77.580643,
@@ -26,22 +28,32 @@ function Map(props) {
     pickups: [],
     dropoffs: []
   };
+
+  // initializing all the pieces of state required
+
   const [mapState, setMapState] = useState(initialMapState);
   const [monthFilter, setMonthFilter] = useState("");
   const [hourFilter, setHourFilter] = useState();
   const [viewPort, setViewPort] = useState(initialVP);
   const [pickupsOnly, setPickupsOnly] = useState(true);
   const [dropoffsOnly, setDropOffsOnly] = useState(false);
-  const cleanData = (data, filter = "") => {
+
+  // cleaning the js object data and creating more usable data with added info like hour, mode and accumulating monthly,hourly and booking data for the charts
+
+  const cleanData = data => {
     const cleanData = [];
     const pickups = [];
     const dropoffs = [];
     const monthlyData = {};
     const hourlyData = {};
     const bookingData = {};
+    const distanceData = {};
+    const travelTypeData = {};
+
     let mobileUserCount = 0,
       onlineUserCount = 0,
       otherUserCount = 0;
+
     for (let d of data) {
       let booked_through;
 
@@ -58,6 +70,8 @@ function Map(props) {
 
       let pickedUp;
       let droppedOff;
+
+      //
       if (d.from_date !== "NULL") {
         pickedUp = d.from_date.split(" ")[1].split(":")[0];
         if (pickedUp.length < 2) {
@@ -77,6 +91,70 @@ function Map(props) {
       if (d.to_long !== "NULL") {
         droppos = [Number(d.to_long), Number(d.to_lat)];
       }
+      switch (d.travel_type_id) {
+        case "1":
+          travelTypeData["Long distance"] = travelTypeData["Long distance"]
+            ? travelTypeData["Long distance"] + 1
+            : 1;
+          break;
+        case "2":
+          travelTypeData["Point to point"] = travelTypeData["Point to point"]
+            ? travelTypeData["Point to point"] + 1
+            : 1;
+          break;
+        case "3":
+          travelTypeData["Hourly Rental"] = travelTypeData["Hourly Rental"]
+            ? travelTypeData["Hourly Rental"] + 1
+            : 1;
+          break;
+        default:
+          travelTypeData["Others"] = travelTypeData["Others"]
+            ? travelTypeData["Others"] + 1
+            : 1;
+      }
+      switch (d.package_id) {
+        case "1":
+          distanceData["<=40kms"] = distanceData["<=40kms"]
+            ? distanceData["<=40kms"] + 1
+            : 1;
+          break;
+        case "2":
+          distanceData["<=80kms"] = distanceData["<=80kms"]
+            ? distanceData["<=80kms"] + 1
+            : 1;
+          break;
+        case "3":
+          distanceData["<=60kms"] = distanceData["<=60kms"]
+            ? distanceData["<=60kms"] + 1
+            : 1;
+          break;
+        case "4":
+          distanceData["<=100kms"] = distanceData["<=100kms"]
+            ? distanceData["<=100kms"] + 1
+            : 1;
+          break;
+        case "5":
+          distanceData["<=50kms"] = distanceData["<=50kms"]
+            ? distanceData["<=50kms"] + 1
+            : 1;
+          break;
+        case "6":
+          distanceData["<=30kms"] = distanceData["<=30kms"]
+            ? distanceData["<=30kms"] + 1
+            : 1;
+          break;
+        case "7":
+          distanceData["<=120kms"] = distanceData["<=120kms"]
+            ? distanceData["<=120kms"] + 1
+            : 1;
+          break;
+        default:
+          distanceData["others"] = distanceData["others"]
+            ? distanceData["others"] + 1
+            : 1;
+          break;
+      }
+
       let month;
       let months = new Array();
       months[0] = "January";
@@ -128,10 +206,12 @@ function Map(props) {
       }
       cleanData.push(dropped);
     }
-
+    props.addTravelTypeData(travelTypeData);
     props.addBookingData(bookingData);
     props.addHourlyData(hourlyData);
     props.addMonthlyData(monthlyData);
+    props.addDistanceData(distanceData);
+
     return [cleanData, pickups, dropoffs];
   };
   const handleMonthlyFilter = () => {
@@ -353,7 +433,9 @@ const mapDispatchToProps = dispatch => {
   return {
     addMonthlyData: data => dispatch(addMonthlyData(data)),
     addHourlyData: data => dispatch(addHourlyData(data)),
-    addBookingData: data => dispatch(addBookingData(data))
+    addBookingData: data => dispatch(addBookingData(data)),
+    addDistanceData: data => dispatch(addDistanceData(data)),
+    addTravelTypeData: data => dispatch(addTravelTypeData(data))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

@@ -1,7 +1,9 @@
 const INITIAL_STATE = {
   monthlyData: [],
   hourlyData: [],
-  bookingData: []
+  bookingData: [],
+  distanceData: [],
+  travelTypeData: []
 };
 const mapReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -11,7 +13,10 @@ const mapReducer = (state = INITIAL_STATE, action) => {
       return { ...state, hourlyData: action.payload };
     case "ADD_BOOKING_DATA":
       return { ...state, bookingData: action.payload };
-
+    case "ADD_DISTANCE_DATA":
+      return { ...state, distanceData: action.payload };
+    case "ADD_TRAVEL_TYPE_DATA":
+      return { ...state, travelTypeData: action.payload };
     default:
       return state;
   }

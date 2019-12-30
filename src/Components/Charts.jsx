@@ -14,10 +14,18 @@ import {
 
 function Charts(props) {
   const [chart, setChart] = useState("hour");
-  const { monthlyData, hourlyData, bookingData } = props.mapData;
+  const {
+    monthlyData,
+    hourlyData,
+    bookingData,
+    distanceData,
+    travelTypeData
+  } = props.mapData;
   let months = [],
     hours = [],
     bookings = [],
+    distance = [],
+    travelType = [],
     angle = 0;
 
   for (let h in hourlyData) {
@@ -45,6 +53,23 @@ function Charts(props) {
     bookings.push(obj);
   }
 
+  for (let d in distanceData) {
+    let obj = {};
+    obj["x"] = d;
+    obj["y"] = distanceData[d];
+    distance.push(obj);
+  }
+
+  for (let t in travelTypeData) {
+    let obj = {};
+    obj["x"] = t;
+    obj["y"] = travelTypeData[t];
+
+    obj["angle"] = Math.floor((travelTypeData[t] / angle) * 360);
+    obj["label"] = t;
+    obj["subLabel"] = Math.floor((travelTypeData[t] / angle) * 100);
+    travelType.push(obj);
+  }
   console.log(hours, months, bookings);
 
   return (
@@ -105,6 +130,40 @@ function Charts(props) {
             <VerticalBarSeries data={bookings} />
           </XYPlot>
         )}
+        {chart === "distance" && (
+          <XYPlot height={400} width={700} xType="ordinal" color="#1adb87">
+            <XAxis
+              style={{
+                text: { fill: "#fff", fontSize: 15 }
+              }}
+            />
+            <YAxis
+              style={{
+                text: { fill: "#fff", fontSize: 12 }
+              }}
+              tickSizeOuter={0}
+              tickPadding={0}
+            />
+            <VerticalBarSeries data={distance} />
+          </XYPlot>
+        )}
+        {chart === "travelType" && (
+          <XYPlot height={400} width={700} xType="ordinal" color="#1adb87">
+            <XAxis
+              style={{
+                text: { fill: "#fff", fontSize: 15 }
+              }}
+            />
+            <YAxis
+              style={{
+                text: { fill: "#fff", fontSize: 12 }
+              }}
+              tickSizeOuter={0}
+              tickPadding={0}
+            />
+            <VerticalBarSeries data={travelType} />
+          </XYPlot>
+        )}
       </div>
       <div className="charts-btns">
         <button onClick={() => setChart("hour")}>Pickups by the hour</button>
@@ -112,6 +171,8 @@ function Charts(props) {
         <button onClick={() => setChart("month")}>
           Monthly ride frequency
         </button>
+        <button onClick={() => setChart("distance")}>Rides by distance</button>
+        <button onClick={() => setChart("travelType")}>Travel type </button>
       </div>
     </div>
     /*
