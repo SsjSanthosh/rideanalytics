@@ -71,8 +71,9 @@ function Map(props) {
       let pickedUp;
       let droppedOff;
 
-      //
+      // checking if from_date,to_date is included, if yes, making hour inferences from that
       if (d.from_date !== "NULL") {
+        // extracting hours
         pickedUp = d.from_date.split(" ")[1].split(":")[0];
         if (pickedUp.length < 2) {
           pickedUp = "0" + pickedUp;
@@ -85,12 +86,18 @@ function Map(props) {
         }
       }
       let pickpos, droppos;
+
+      // checking for long and lat, if yes keeping track of each position and pickups and dropoffs in different pieces of state
+
       if (d.from_long !== "NULL") {
         pickpos = [Number(d.from_long), Number(d.from_lat)];
       }
       if (d.to_long !== "NULL") {
         droppos = [Number(d.to_long), Number(d.to_lat)];
       }
+
+      // building the travel type data for the chart
+
       switch (d.travel_type_id) {
         case "1":
           travelTypeData["Long distance"] = travelTypeData["Long distance"]
@@ -112,6 +119,9 @@ function Map(props) {
             ? travelTypeData["Others"] + 1
             : 1;
       }
+
+      // building the distance data for the charts
+
       switch (d.package_id) {
         case "1":
           distanceData["<=40kms"] = distanceData["<=40kms"]
@@ -155,8 +165,10 @@ function Map(props) {
           break;
       }
 
+      // extracting the month from the month
+
       let month;
-      let months = new Array();
+      let months = [];
       months[0] = "January";
       months[1] = "February";
       months[2] = "March";
@@ -173,6 +185,7 @@ function Map(props) {
         month = months[new Date(d.from_date.split(" ")[0]).getMonth()];
       }
 
+      // making new pickup and drop off  objects to add to the state
       const pickup = {
         position: pickpos,
         hour: pickedUp,
@@ -180,6 +193,15 @@ function Map(props) {
         pickup: true,
         month: month
       };
+
+      const dropped = {
+        position: droppos,
+        hour: droppedOff ? droppedOff : null,
+        booked_through,
+        pickup: false
+      };
+
+      // pushing to the monthly,hourly, travel , distance and booking data for the charts
 
       monthlyData[pickup.month] = monthlyData[pickup.month]
         ? monthlyData[pickup.month] + 1
@@ -190,12 +212,8 @@ function Map(props) {
       bookingData[pickup.booked_through] = bookingData[pickup.booked_through]
         ? bookingData[pickup.booked_through] + 1
         : 1;
-      const dropped = {
-        position: droppos,
-        hour: droppedOff ? droppedOff : null,
-        booked_through,
-        pickup: false
-      };
+
+      // adding the data to the state
       cleanData.push(pickup);
 
       if (droppos && droppos[0] !== undefined) {
@@ -206,6 +224,9 @@ function Map(props) {
       }
       cleanData.push(dropped);
     }
+
+    // pushing data to the shared state in redux
+
     props.addTravelTypeData(travelTypeData);
     props.addBookingData(bookingData);
     props.addHourlyData(hourlyData);
@@ -214,12 +235,16 @@ function Map(props) {
 
     return [cleanData, pickups, dropoffs];
   };
+
+  // function to filter by month
+
   const handleMonthlyFilter = () => {
     const newpickups = [];
     const newdropoffs = [];
     if (monthFilter === "") {
       return;
     }
+    // getting new positions from the state
     for (let d of mapState.data) {
       if (d.month == monthFilter) {
         if (d.pickup && d.position !== undefined) {
@@ -238,6 +263,8 @@ function Map(props) {
       };
     });
   };
+
+  // function to filter  by hours , all 24
   const handleHourFilter = () => {
     const newpickups = [];
     const newdropoffs = [];
@@ -259,6 +286,9 @@ function Map(props) {
       };
     });
   };
+
+  // function to filter by booking mode
+
   const handleModeFilter = choice => {
     const newpickups = [];
     const newdropoffs = [];
@@ -294,9 +324,14 @@ function Map(props) {
     });
   };
 
+  // useEffect to load in data on change of the redux shared state
+
   useEffect(() => {
     if (props.data.data) {
+      //  initiating the data processing
       const cleanedData = cleanData(props.data.data);
+
+      // setting state with new and clean state
 
       setMapState(old => {
         return {
@@ -333,6 +368,7 @@ function Map(props) {
             />
           )}
           {dropoffsOnly && (
+            // wrapper to help display scatterplots in react-mapbox
             <ScatterplotOverlay
               locations={Immutable.fromJS(mapState.dropoffs)}
               dotRadius={5}
@@ -349,6 +385,7 @@ function Map(props) {
         </p>
       </div>
       <div className="Btn-Container">
+        {/* buttons to filter the data on the map  */}
         <button onClick={() => handleModeFilter("mobile")}>Only Mobile </button>
         <button onClick={() => handleModeFilter("online")}>Only Online </button>
         <button onClick={() => handleModeFilter("others")}>Only others </button>
@@ -422,12 +459,16 @@ function Map(props) {
   );
 }
 
+// taking the state in from redux
+
 const mapStateToProps = state => {
   return {
     data: state.data,
     mapData: state.map
   };
 };
+
+//  dispatching all the actions to redux
 
 const mapDispatchToProps = dispatch => {
   return {
