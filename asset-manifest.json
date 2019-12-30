@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/rideanalytics/static/css/main.25422aff.chunk.css",
+    "main.js": "/rideanalytics/static/js/main.f9e74d61.chunk.js",
+    "main.js.map": "/rideanalytics/static/js/main.f9e74d61.chunk.js.map",
+    "runtime-main.js": "/rideanalytics/static/js/runtime-main.12aa6175.js",
+    "runtime-main.js.map": "/rideanalytics/static/js/runtime-main.12aa6175.js.map",
+    "static/css/2.5a2f7233.chunk.css": "/rideanalytics/static/css/2.5a2f7233.chunk.css",
+    "static/js/2.7e007c8c.chunk.js": "/rideanalytics/static/js/2.7e007c8c.chunk.js",
+    "static/js/2.7e007c8c.chunk.js.map": "/rideanalytics/static/js/2.7e007c8c.chunk.js.map",
+    "index.html": "/rideanalytics/index.html",
+    "precache-manifest.4a4c1c79b12936d5cf02f097bf303317.js": "/rideanalytics/precache-manifest.4a4c1c79b12936d5cf02f097bf303317.js",
+    "service-worker.js": "/rideanalytics/service-worker.js",
+    "static/css/2.5a2f7233.chunk.css.map": "/rideanalytics/static/css/2.5a2f7233.chunk.css.map",
+    "static/css/main.25422aff.chunk.css.map": "/rideanalytics/static/css/main.25422aff.chunk.css.map",
+    "static/js/2.7e007c8c.chunk.js.LICENSE": "/rideanalytics/static/js/2.7e007c8c.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.12aa6175.js",
+    "static/css/2.5a2f7233.chunk.css",
+    "static/js/2.7e007c8c.chunk.js",
+    "static/css/main.25422aff.chunk.css",
+    "static/js/main.f9e74d61.chunk.js"
+  ]
+}
