@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import ReactFileReader from "react-file-reader";
+import React from "react";
+
 import { connect } from "react-redux";
 import { addData } from "./../Redux/csvData/csvActions";
+import { csvdata } from "../csvdata.js";
 function FileUpload(props) {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+
   // Function to convert csv into a JS object
   const csvJSON = csv => {
     var lines = csv.split("\n");
@@ -28,21 +30,16 @@ function FileUpload(props) {
 
     return result;
   };
-  const handleUpload = files => {
-    const reader = new FileReader();
-    reader.readAsText(files[0]);
-    reader.onload = () => {
-      props.addData(csvJSON(reader.result));
-    };
+
+  const handleUpload = () => {
+    props.addData(csvJSON(csvdata));
   };
 
   return (
     <div className="File-Container">
-      <ReactFileReader fileTypes={".csv"} handleFiles={handleUpload}>
-        <button className="btn" id="uploadbtn">
-          Upload a csv file
-        </button>
-      </ReactFileReader>
+      <button className="btn" id="uploadbtn" onClick={handleUpload}>
+        Start analysis
+      </button>
     </div>
   );
 }

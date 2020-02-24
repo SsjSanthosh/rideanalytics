@@ -1,16 +1,8 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./Charts.scss";
 import "./../../node_modules/react-vis/dist/style.css";
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  RadialChart,
-  LineSeries,
-  Hint,
-  VerticalBarSeries
-} from "react-vis";
+import { XYPlot, XAxis, YAxis, LineSeries, VerticalBarSeries } from "react-vis";
 
 function Charts(props) {
   const [chart, setChart] = useState("hour");
@@ -70,7 +62,6 @@ function Charts(props) {
     obj["subLabel"] = Math.floor((travelTypeData[t] / angle) * 100);
     travelType.push(obj);
   }
-  console.log(hours, months, bookings);
 
   return (
     <div className="charts-container">

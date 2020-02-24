@@ -246,7 +246,7 @@ function Map(props) {
     }
     // getting new positions from the state
     for (let d of mapState.data) {
-      if (d.month == monthFilter) {
+      if (d.month === monthFilter) {
         if (d.pickup && d.position !== undefined) {
           newpickups.push(d.position);
         }
@@ -269,7 +269,7 @@ function Map(props) {
     const newpickups = [];
     const newdropoffs = [];
     for (let d of mapState.data) {
-      if (d.hour == hourFilter) {
+      if (d.hour === hourFilter) {
         if (d.pickup && d.position !== undefined) {
           newpickups.push(d.position);
         }
@@ -347,8 +347,9 @@ function Map(props) {
     <div className="Map-Container">
       <div className="Map-Actual">
         <p>
-          Upload your csv file on the left, filter the results on the right and
-          check out the graphs down below!
+          This project uses predefined data, press the start button to
+          initialize the data and does not currently support custom data, filter
+          the results on the right and check out the graphs down below!
         </p>
         <MapGL
           {...viewPort}
