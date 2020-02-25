@@ -20,48 +20,31 @@ function Charts(props) {
     travelType = [],
     angle = 0;
 
-  for (let h in hourlyData) {
-    let obj = {};
-    obj["x"] = h;
-    obj["y"] = hourlyData[h];
-    hours.push(obj);
-  }
-  for (let m in monthlyData) {
-    let obj = {};
-    obj["x"] = m;
-    obj["y"] = monthlyData[m];
-    months.push(obj);
-  }
-  for (let b in bookingData) {
-    angle += bookingData[b];
-  }
-  for (let b in bookingData) {
-    let obj = {};
-    obj["x"] = b;
-    obj["y"] = bookingData[b];
-    obj["angle"] = Math.floor((bookingData[b] / angle) * 360);
-    obj["label"] = b;
-    obj["subLabel"] = Math.floor((bookingData[b] / angle) * 100);
-    bookings.push(obj);
-  }
+  // build data for each filter graph
+  const buildGraphData = data => {
+    let results = [];
+    for (let d in data) {
+      let obj = {};
+      obj["x"] = d;
+      obj["y"] = data[d];
+      results.push(obj);
+    }
+    return results;
+  };
 
-  for (let d in distanceData) {
-    let obj = {};
-    obj["x"] = d;
-    obj["y"] = distanceData[d];
-    distance.push(obj);
-  }
+  hours = buildGraphData(hourlyData);
+  // build hourly data
+  months = buildGraphData(monthlyData);
+  // build monthly data
 
-  for (let t in travelTypeData) {
-    let obj = {};
-    obj["x"] = t;
-    obj["y"] = travelTypeData[t];
+  bookings = buildGraphData(bookingData);
+  // build bookingdata
 
-    obj["angle"] = Math.floor((travelTypeData[t] / angle) * 360);
-    obj["label"] = t;
-    obj["subLabel"] = Math.floor((travelTypeData[t] / angle) * 100);
-    travelType.push(obj);
-  }
+  distance = buildGraphData(distanceData);
+  // // build distance data
+
+  travelType = buildGraphData(travelTypeData);
+  // build travel data
 
   return (
     <div className="charts-container">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+// importing actions to add a subset of the data into the store from the mapactions
 import {
   addMonthlyData,
   addHourlyData,
@@ -7,13 +8,16 @@ import {
   addDistanceData,
   addTravelTypeData
 } from "./../Redux/Map/MapActions";
+// Immutable.js required to map locations
 import Immutable from "immutable";
+// Custom scatterplot overlay I found on github to help plot the data without having to add or configure anything else
+
 import ScatterplotOverlay from "./ScatterplotOverlay";
 import "./Map.scss";
 import MapGL from "react-map-gl";
 
 function Map(props) {
-  // initial viewport for the map, setting location to bengaluru
+  // initial viewport for the map, setting location to central bengaluru
   const initialVP = {
     latitude: 12.972442,
     longitude: 77.580643,
@@ -341,7 +345,7 @@ function Map(props) {
         };
       });
     }
-  }, [props.data]);
+  }, [props.data, cleanData]);
 
   return (
     <div className="Map-Container">
@@ -353,8 +357,10 @@ function Map(props) {
         </p>
         <MapGL
           {...viewPort}
+          // initial location
           onViewportChange={viewport => setViewPort(viewport)}
           mapStyle="mapbox://styles/dextrous24/ck4jfn3n011fm1cqpsvetwpmr"
+          // style available on mapbox styles
           mapboxApiAccessToken="pk.eyJ1IjoiZGV4dHJvdXMyNCIsImEiOiJjazRqZXpsankxMDY2M21uenh5cXF6ZHprIn0.ky8FY-wVExN1IclibDMxGg"
           className="map-div"
         >
