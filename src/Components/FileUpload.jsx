@@ -2,6 +2,7 @@ import React from "react";
 
 import { connect } from "react-redux";
 import { addData } from "./../Redux/csvData/csvActions";
+// data removed from public repo.
 import { csvdata } from "../csvdata.js";
 function FileUpload(props) {
   // const [data, setData] = useState([]);
@@ -12,7 +13,7 @@ function FileUpload(props) {
   // b. It requires a very specific data set and anything else would either crash and/or wreck the site
 
   // Function to convert csv into a JS object
-  const csvJSON = csv => {
+  const csvJSON = (csv) => {
     var lines = csv.split("\n");
 
     var result = [];
@@ -53,16 +54,16 @@ function FileUpload(props) {
 }
 
 // mapping the store's redux to the props of the component
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    data: state.data
+    data: state.data,
   };
 };
 
 // mapping the actions of the store to a function to be passed onto the props
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addData: data => dispatch(addData(data))
+    addData: (data) => dispatch(addData(data)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FileUpload);
